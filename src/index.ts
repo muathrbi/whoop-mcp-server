@@ -6,6 +6,7 @@ import express, { type Request, type Response } from 'express';
 import { WhoopClient } from './whoop-client.js';
 import { WhoopDatabase } from './database.js';
 import { WhoopSync } from './sync.js';
+import { randomUUID } from 'node:crypto';
 
 interface ToolArguments {
 	days?: number;
@@ -384,7 +385,7 @@ async function main(): Promise<void> {
 					transport = session.transport;
 				} else {
 					transport = new StreamableHTTPServerTransport({
-						sessionIdGenerator: () => crypto.randomUUID(),
+						sessionIdGenerator: () => randomUUID(),
 						onsessioninitialized: newSessionId => {
 							transports.set(newSessionId, { transport, lastAccess: Date.now() });
 						},
